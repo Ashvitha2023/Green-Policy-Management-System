@@ -4,15 +4,12 @@ const db = mysql.createConnection({
   host: "localhost",
   user: "root",
   password: "2005",
-  database: "green_policy_db"
+  database: "green_policy"
 });
 
 db.connect(err => {
-  if (err) {
-    console.error("DB Connection Failed:", err);
-    return;
-  }
-  console.log("DB Connected");
+  if(err) throw err;
+  console.log("Database Connected");
 });
 
 module.exports = db;

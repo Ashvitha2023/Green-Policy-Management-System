@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Policy Details</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+</head>
+
+<body class="bg-light">
+
+
+<nav class="navbar navbar-dark bg-success px-3">
+  <span class="navbar-brand">🌱 Policy Details</span>
+
+  <a href="/staff" class="btn btn-outline-light">
+    Back
+  </a>
+</nav>
+
+
+<div class="container mt-4">
+
+<div class="card shadow p-4">
+
+<h3 class="mb-3"><%= policy.title %></h3>
+
+<p><b>Description:</b></p>
+<p><%= policy.description %></p>
+
+<p>
+  <b>Status:</b>
+  <span class="badge bg-primary">
+    <%= policy.status %>
+  </span>
+</p>
+
+<hr>
+
+<h5>👨‍🎓 Assigned Students</h5>
+
+<ul class="list-group mb-3">
+
+<% students.forEach(s => { %>
+
+<li class="list-group-item">
+  <i class="bi bi-person"></i>
+  <%= s.name %> - <%= s.email %>
+</li>
+
+<% }) %>
+
+</ul>
+
+
+<h5>📤 Upload Proof</h5>
+
+<form action="/staff/upload/<%= spid %>" method="POST" enctype="multipart/form-data">
+
+  <div class="mb-3">
+    <input type="file" name="file" class="form-control" required>
+  </div>
+
+  <button class="btn btn-success">
+    Upload
+  </button>
+
+</form>
+
+</div>
+
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>
