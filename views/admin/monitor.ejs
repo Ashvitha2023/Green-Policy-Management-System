@@ -22,7 +22,7 @@
 
 <h4 class="mb-3">All Assigned Policies</h4>
 
-<table class="table table-bordered table-hover">
+<table class="table table-bordered table-hover align-middle">
 
 <thead class="table-dark">
 <tr>
@@ -32,6 +32,7 @@
   <th>Status</th>
   <th>Students</th>
   <th>Proof</th>
+  <th>Action</th> <!-- ✅ NEW -->
 </tr>
 </thead>
 
@@ -40,7 +41,7 @@
 <% if(reports.length === 0){ %>
 
 <tr>
-  <td colspan="6" class="text-center">
+  <td colspan="7" class="text-center">
     No records found
   </td>
 </tr>
@@ -57,18 +58,60 @@
 <td><%= r.staff %></td>
 
 <td>
-  <%= r.status %>
+
+<% if(r.status && r.status.trim() === 'completed'){ %>
+  <span class="badge bg-success">Completed</span>
+
+<% } else if(r.status && r.status.trim() === 'pending_verification'){ %>
+  <span class="badge bg-warning text-dark">Verify</span>
+
+<% } else { %>
+  <span class="badge bg-danger">Pending</span>
+<% } %>
+
 </td>
 
 <td><%= r.students %></td>
+
 
 <td>
 
 <% if(r.file_path){ %>
 
-  <a href="/<%= r.file_path %>" target="_blank">
+  <a href="/<%= r.file_path %>" target="_blank"
+     class="btn btn-sm btn-info">
     View
   </a>
+
+<% } else { %>
+
+  --
+
+<% } %>
+
+</td>
+
+
+<!-- ✅ ACTION BUTTONS -->
+<td>
+
+<% if(r.status && r.status.trim() === 'pending_verification'){ %>
+
+<form action="/admin/verify" method="POST" class="d-flex gap-1">
+
+  <input type="hidden" name="id" value="<%= r.spid %>">
+
+  <button name="action" value="approve"
+          class="btn btn-success btn-sm">
+    Approve
+  </button>
+
+  <button name="action" value="reject"
+          class="btn btn-danger btn-sm">
+    Reject
+  </button>
+
+</form>
 
 <% } else { %>
 

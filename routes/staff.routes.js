@@ -1,15 +1,30 @@
 const express = require("express");
 const db = require("../config/db");
+const multer = require("multer");
+const path = require("path");
 
 const router = express.Router();
 
 
-// ================= STAFF DASHBOARD (CARDS) =================
+/* =========================
+   🔐 STAFF AUTH PROTECTION
+========================= */
+router.use((req, res, next) => {
+
+  if (!req.session.userId || req.session.role !== "staff") {
+    return res.redirect("/");
+  }
+
+  next();
+});
+
+
+/* =========================
+   📊 STAFF DASHBOARD
+========================= */
 router.get("/", (req, res) => {
 
-  // TEMP: replace later with session id
   const staffId = req.session.userId;
- // use your staff id for testing
 
   const sql = `
   SELECT
@@ -20,6 +35,7 @@ router.get("/", (req, res) => {
   FROM staff_policies sp
   JOIN policies p ON sp.policy_id = p.id
   WHERE sp.staff_id = ?
+  ORDER BY sp.id DESC
   `;
 
   db.query(sql, [staffId], (err, result) => {
@@ -29,22 +45,20 @@ router.get("/", (req, res) => {
     res.render("staff/dashboard", {
       policies: result
     });
+
   });
 });
 
-// ================= POLICY DETAILS =================
+
+/* =========================
+   📄 POLICY DETAILS
+========================= */
 router.get("/policy/:id", (req, res) => {
 
-  // 🔐 Check Login
-  if (!req.session.userId || req.session.role !== "staff") {
-    return res.redirect("/");
-  }
+  const staffId = req.session.userId;
+  const spid = req.params.id;
 
-  const staffId = req.session.userId;   // logged-in staff
-  const spid = req.params.id;           // staff_policy_id
-
-
-  // ✅ Check if this policy belongs to this staff
+  // Check ownership
   const policySql = `
   SELECT
     p.title,
@@ -59,7 +73,6 @@ router.get("/policy/:id", (req, res) => {
 
     if (err) return res.send(err);
 
-    // ❗ If no record → not his policy
     if (policy.length === 0) {
       return res.send("Unauthorized Access ❌");
     }
@@ -81,45 +94,25 @@ router.get("/policy/:id", (req, res) => {
         students,
         spid
       });
+
     });
+
   });
 });
 
 
-
-// ================= VIEW STUDENTS =================
-router.get("/students/:id", (req, res) => {
-
-  const spid = req.params.id;
-
-  const sql = `
-  SELECT u.name, u.email
-  FROM student_groups sg
-  JOIN users u ON sg.student_id = u.id
-  WHERE sg.staff_policy_id = ?
-  `;
-
-  db.query(sql, [spid], (err, result) => {
-
-    if (err) return res.send(err);
-
-    res.render("staff/students", {
-      students: result
-    });
-  });
-
-});
-
-
-// ================= UPLOAD PROOF =================
-const multer = require("multer");
+/* =========================
+   📁 FILE UPLOAD SETUP
+========================= */
 
 const storage = multer.diskStorage({
 
-  destination: "uploads/",
+  destination: (req, file, cb) => {
+    cb(null, "uploads/");
+  },
 
   filename: (req, file, cb) => {
-    cb(null, Date.now() + "_" + file.originalname);
+    cb(null, Date.now() + path.extname(file.originalname));
   }
 
 });
@@ -127,27 +120,42 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 
+/* =========================
+   📤 UPLOAD PROOF
+========================= */
 router.post("/upload/:id", upload.single("file"), (req, res) => {
 
   const spid = req.params.id;
 
-  // Save upload
+  if (!req.file) {
+    return res.send("No file uploaded.");
+  }
+
+  const filePath = "uploads/" + req.file.filename;
+
+  // 1️⃣ Save file
   db.query(
-    "INSERT INTO uploads (staff_policy_id,file_path) VALUES (?,?)",
-    [spid, req.file.path],
+    "INSERT INTO uploads (staff_policy_id, file_path) VALUES (?, ?)",
+    [spid, filePath],
     (err) => {
 
       if (err) return res.send(err);
 
-      // Update status
+      // 2️⃣ Update status to pending_verification
       db.query(
         "UPDATE staff_policies SET status='pending_verification' WHERE id=?",
-        [spid]
+        [spid],
+        (err2) => {
+
+          if (err2) return res.send(err2);
+
+          res.redirect("/staff");
+        }
       );
 
-      res.redirect("/staff");
     }
   );
+
 });
 
 
