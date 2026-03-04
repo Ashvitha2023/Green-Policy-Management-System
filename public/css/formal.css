@@ -1,0 +1,247 @@
+:root {
+    /* Formal & Technical Color Palette */
+    --primary-blue: #004d99;
+    --secondary-blue: #0066cc;
+    --accent-blue: #e6f0fa;
+    --dark-slate: #1a252f;
+    --light-gray: #f8f9fa;
+    --border-color: #dee2e6;
+    --text-main: #2c3e50;
+    --text-muted: #6c757d;
+    --success-green: #198754;
+    --danger-red: #dc3545;
+    --warning-yellow: #ffc107;
+    --white: #ffffff;
+}
+
+body {
+    background-color: var(--light-gray) !important;
+    color: var(--text-main) !important;
+    font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Base Components */
+.card,
+.formal-card {
+    background: var(--white) !important;
+    border: 1px solid var(--border-color) !important;
+    border-radius: 6px !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05) !important;
+    transition: box-shadow 0.2s ease-in-out;
+    color: var(--text-main) !important;
+}
+
+.formal-card:hover,
+.card:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08) !important;
+    border-color: #ced4da !important;
+}
+
+/* Typography Headings */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    color: var(--dark-slate) !important;
+    font-weight: 500 !important;
+    letter-spacing: -0.2px;
+}
+
+.text-primary {
+    color: var(--primary-blue) !important;
+}
+
+.text-success {
+    color: var(--success-green) !important;
+}
+
+.text-danger {
+    color: var(--danger-red) !important;
+}
+
+.text-muted {
+    color: var(--text-muted) !important;
+}
+
+/* Formal Buttons */
+.btn {
+    font-weight: 500;
+    border-radius: 4px;
+    letter-spacing: 0.3px;
+    transition: all 0.2s ease-in-out !important;
+    box-shadow: none !important;
+}
+
+.btn-primary {
+    background-color: var(--primary-blue) !important;
+    border-color: var(--primary-blue) !important;
+    color: var(--white) !important;
+}
+
+.btn-primary:hover {
+    background-color: var(--secondary-blue) !important;
+    border-color: var(--secondary-blue) !important;
+}
+
+.btn-success {
+    background-color: var(--success-green) !important;
+    border-color: var(--success-green) !important;
+    color: var(--white) !important;
+}
+
+.btn-success:hover {
+    background-color: #157347 !important;
+    border-color: #146c43 !important;
+}
+
+.btn-outline-primary {
+    color: var(--primary-blue) !important;
+    border-color: var(--primary-blue) !important;
+    background-color: transparent !important;
+}
+
+.btn-outline-primary:hover {
+    background-color: var(--primary-blue) !important;
+    color: var(--white) !important;
+}
+
+.btn-outline-danger {
+    color: var(--danger-red) !important;
+    border-color: var(--danger-red) !important;
+    background-color: transparent !important;
+}
+
+.btn-outline-danger:hover {
+    background-color: var(--danger-red) !important;
+    color: var(--white) !important;
+}
+
+/* Forms */
+.form-label {
+    font-weight: 500;
+    color: var(--dark-slate);
+    margin-bottom: 0.25rem;
+}
+
+.form-control,
+.form-select {
+    background-color: var(--white) !important;
+    border: 1px solid var(--border-color) !important;
+    color: var(--text-main) !important;
+    border-radius: 4px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.95rem;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: var(--secondary-blue) !important;
+    box-shadow: 0 0 0 0.2rem rgba(0, 102, 204, 0.25) !important;
+    outline: 0;
+}
+
+::placeholder {
+    color: #adb5bd !important;
+}
+
+/* Navbar */
+.navbar {
+    background-color: var(--dark-slate) !important;
+    border-bottom: 2px solid var(--primary-blue) !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
+}
+
+.navbar-brand {
+    color: var(--white) !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.5px;
+    font-size: 1.25rem;
+}
+
+/* Data Tables */
+.table {
+    color: var(--text-main) !important;
+    background-color: var(--white) !important;
+    border: 1px solid var(--border-color);
+    margin-bottom: 0;
+}
+
+.table thead th {
+    background-color: var(--accent-blue) !important;
+    color: var(--dark-slate) !important;
+    border-bottom: 2px solid var(--border-color) !important;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.5px;
+    padding: 0.75rem 1rem;
+}
+
+.table tbody td {
+    border-top: 1px solid var(--border-color) !important;
+    padding: 0.75rem 1rem;
+    vertical-align: middle;
+    background-color: var(--white) !important;
+}
+
+.table-hover tbody tr:hover td,
+.table-hover tbody tr:hover th {
+    background-color: #f1f5f9 !important;
+}
+
+/* Badges */
+.badge {
+    padding: 0.35em 0.65em;
+    font-weight: 500;
+    border-radius: 0.25rem;
+}
+
+.badge.bg-success {
+    background-color: #d1e7dd !important;
+    color: #0f5132 !important;
+    border: 1px solid #badbcc !important;
+}
+
+.badge.bg-warning {
+    background-color: #fff3cd !important;
+    color: #664d03 !important;
+    border: 1px solid #ffecb5 !important;
+}
+
+.badge.bg-secondary {
+    background-color: #e2e3e5 !important;
+    color: #41464c !important;
+    border: 1px solid #d3d6d8 !important;
+}
+
+.badge.bg-danger {
+    background-color: #f8d7da !important;
+    color: #842029 !important;
+    border: 1px solid #f5c2c7 !important;
+}
+
+/* Scrollbar Setup */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--light-gray);
+}
+
+::-webkit-scrollbar-thumb {
+    background: #adb5bd;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #6c757d;
+}

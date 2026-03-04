@@ -1,135 +1,186 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <title>Monitor Policies</title>
 
+<head>
+  <title>Green Policy | Monitor</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Professional Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+  <!-- Formal UI CSS -->
+  <link rel="stylesheet" href="/css/formal.css">
 </head>
 
-<body class="bg-light">
+<body>
 
-<nav class="navbar navbar-dark bg-success px-3">
-  <span class="navbar-brand">📊 Policy Monitor</span>
+  <nav class="navbar px-4 py-2">
+    <span class="navbar-brand mb-0 h1 d-flex align-items-center gap-2">
+      <i class="bi bi-shield-lock"></i> Green Policy
+      <span class="text-muted fs-6 ms-2 pb-1 border-start border-secondary ps-3">Policy Monitoring Center</span>
+    </span>
 
-  <div>
-    <a href="/admin" class="btn btn-outline-light me-2">Dashboard</a>
-    <a href="/logout" class="btn btn-outline-light">Logout</a>
+    <div>
+      <a href="/admin" class="btn btn-outline-light btn-sm me-2 px-3">
+        <i class="bi bi-grid-1x2"></i> Dashboard
+      </a>
+      <a href="/logout" class="btn btn-outline-danger btn-sm px-3">
+        <i class="bi bi-box-arrow-right"></i> Logout
+      </a>
+    </div>
+  </nav>
+
+
+  <div class="container-fluid py-4 px-4">
+
+    <div class="d-flex justify-content-between align-items-center mb-4 pb-2 border-bottom">
+      <div>
+        <h3 class="mb-1 text-primary fw-semibold">Active Policies Overview</h3>
+        <p class="text-muted small mb-0">Track policy status, adherence metrics, and documentation across departments.
+        </p>
+      </div>
+    </div>
+
+
+    <div class="card formal-card">
+      <div class="card-body p-0 border-0">
+
+        <div class="table-responsive m-0">
+          <table class="table table-hover align-middle mb-0">
+
+            <thead>
+              <tr>
+                <th class="ps-4">Policy Identifier</th>
+                <th>Department</th>
+                <th>Assigned Staff</th>
+                <th>Current Status</th>
+                <th class="text-center">Student Impact</th>
+                <th class="text-center">Documentation</th>
+                <th class="text-center pe-4">Required Actions</th>
+              </tr>
+            </thead>
+
+            <tbody>
+
+              <% if(reports.length===0){ %>
+
+                <tr>
+                  <td colspan="7" class="text-center text-muted py-5">
+                    <i class="bi bi-inbox fs-3 d-block mb-2"></i>
+                    No active policies or reports found in the system.
+                  </td>
+                </tr>
+
+                <% } %>
+
+
+                  <% reports.forEach(r=> { %>
+
+                    <tr>
+
+                      <td class="ps-4 fw-medium text-dark">
+                        <%= r.policy %>
+                      </td>
+
+                      <td>
+                        <%= r.department %>
+                      </td>
+
+                      <td>
+                        <div class="d-flex align-items-center">
+                          <div
+                            class="bg-light text-primary rounded-circle d-flex align-items-center justify-content-center me-2"
+                            style="width: 28px; height: 28px;">
+                            <i class="bi bi-person-fill small"></i>
+                          </div>
+                          <%= r.staff %>
+                        </div>
+                      </td>
+
+                      <td>
+
+                        <% if(r.status && r.status.trim()==='completed' ){ %>
+                          <span class="badge bg-success"><i class="bi bi-check-circle me-1"></i> Completed</span>
+
+                          <% } else if(r.status && r.status.trim()==='pending_verification' ){ %>
+                            <span class="badge bg-warning"><i class="bi bi-hourglass-split me-1"></i> Review
+                              Required</span>
+
+                            <% } else { %>
+                              <span class="badge bg-secondary"><i class="bi bi-arrow-repeat me-1"></i> In
+                                Progress</span>
+                              <% } %>
+
+                      </td>
+
+                      <td class="text-center">
+                        <span class="badge bg-light text-dark border">
+                          <%= r.students %> Enrolled
+                        </span>
+                      </td>
+
+
+                      <td class="text-center">
+
+                        <% if(r.file_path){ %>
+
+                          <a href="/<%= r.file_path %>" target="_blank"
+                            class="btn btn-sm btn-outline-primary shadow-sm px-3 rounded-pill">
+                            <i class="bi bi-paperclip"></i> View File
+                          </a>
+
+                          <% } else { %>
+
+                            <span class="text-muted small fst-italic">Pending Upload</span>
+
+                            <% } %>
+
+                      </td>
+
+
+                      <td class="text-center pe-4">
+
+                        <% if(r.status && r.status.trim()==='pending_verification' ){ %>
+
+                          <form action="/admin/verify" method="POST" class="d-flex gap-2 justify-content-center">
+
+                            <input type="hidden" name="id" value="<%= r.spid %>">
+
+                            <button name="action" value="approve" class="btn btn-success btn-sm px-3"
+                              title="Approve Report">
+                              Approve
+                            </button>
+
+                            <button name="action" value="reject" class="btn btn-outline-danger btn-sm px-3"
+                              title="Reject Report">
+                              Reject
+                            </button>
+
+                          </form>
+
+                          <% } else { %>
+
+                            <span class="text-muted small">—</span>
+
+                            <% } %>
+
+                      </td>
+
+                    </tr>
+
+                    <% }) %>
+
+            </tbody>
+
+          </table>
+        </div>
+
+      </div>
+    </div>
+
   </div>
-</nav>
-
-
-<div class="container mt-4">
-
-<h4 class="mb-3">All Assigned Policies</h4>
-
-<table class="table table-bordered table-hover align-middle">
-
-<thead class="table-dark">
-<tr>
-  <th>Policy</th>
-  <th>Department</th>
-  <th>Staff</th>
-  <th>Status</th>
-  <th>Students</th>
-  <th>Proof</th>
-  <th>Action</th> <!-- ✅ NEW -->
-</tr>
-</thead>
-
-<tbody>
-
-<% if(reports.length === 0){ %>
-
-<tr>
-  <td colspan="7" class="text-center">
-    No records found
-  </td>
-</tr>
-
-<% } %>
-
-
-<% reports.forEach(r => { %>
-
-<tr>
-
-<td><%= r.policy %></td>
-<td><%= r.department %></td>
-<td><%= r.staff %></td>
-
-<td>
-
-<% if(r.status && r.status.trim() === 'completed'){ %>
-  <span class="badge bg-success">Completed</span>
-
-<% } else if(r.status && r.status.trim() === 'pending_verification'){ %>
-  <span class="badge bg-warning text-dark">Verify</span>
-
-<% } else { %>
-  <span class="badge bg-danger">Pending</span>
-<% } %>
-
-</td>
-
-<td><%= r.students %></td>
-
-
-<td>
-
-<% if(r.file_path){ %>
-
-  <a href="/<%= r.file_path %>" target="_blank"
-     class="btn btn-sm btn-info">
-    View
-  </a>
-
-<% } else { %>
-
-  --
-
-<% } %>
-
-</td>
-
-
-<!-- ✅ ACTION BUTTONS -->
-<td>
-
-<% if(r.status && r.status.trim() === 'pending_verification'){ %>
-
-<form action="/admin/verify" method="POST" class="d-flex gap-1">
-
-  <input type="hidden" name="id" value="<%= r.spid %>">
-
-  <button name="action" value="approve"
-          class="btn btn-success btn-sm">
-    Approve
-  </button>
-
-  <button name="action" value="reject"
-          class="btn btn-danger btn-sm">
-    Reject
-  </button>
-
-</form>
-
-<% } else { %>
-
-  --
-
-<% } %>
-
-</td>
-
-</tr>
-
-<% }) %>
-
-</tbody>
-
-</table>
-
-</div>
 
 </body>
+
 </html>

@@ -1,58 +1,84 @@
 <!DOCTYPE html>
 <html>
-<head>
-<title>Admin Dashboard</title>
 
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+<head>
+  <title>Green Policy | Admin Dashboard</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Professional Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+  <!-- Formal UI CSS -->
+  <link rel="stylesheet" href="/css/formal.css">
 
 </head>
 
-<body class="bg-light">
+<body>
 
-<nav class="navbar navbar-dark bg-success px-3">
-  <span class="navbar-brand">
-    🌱 Green Policy - Admin Panel
-  </span>
+  <nav class="navbar px-4 py-2">
+    <span class="navbar-brand mb-0 h1 d-flex align-items-center gap-2">
+      <i class="bi bi-shield-lock"></i> Green Policy
+      <span class="text-muted fs-6 ms-2 pb-1 border-start border-secondary ps-3">Admin Dashboard</span>
+    </span>
 
-  <a href="/logout" class="btn btn-outline-light">
-    Logout
-  </a>
-</nav>
+    <a href="/logout" class="btn btn-outline-danger btn-sm px-3">
+      <i class="bi bi-box-arrow-right"></i> Logout
+    </a>
+  </nav>
 
-<div class="container mt-4">
+  <div class="container mt-5">
 
-<h3 class="mb-4">Dashboard</h3>
-
-<div class="row g-4">
-
-  <div class="col-md-4">
-    <div class="card shadow text-center p-4">
-      <i class="bi bi-plus-circle fs-1 text-success"></i>
-      <h5 class="mt-2">Create Policy</h5>
-
-      <a href="/admin/create-policy" class="btn btn-success mt-2">
-        Go
-      </a>
+    <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-2">
+      <h3 class="mb-0 text-primary fw-semibold">System Dashboard</h3>
+      <div class="text-muted small">
+        <i class="bi bi-person-badge"></i> Administrator Access
+      </div>
     </div>
+
+    <div class="row g-4">
+
+      <div class="col-md-6 col-lg-4">
+        <div class="card formal-card text-center p-4 h-100">
+          <div class="mb-3">
+            <div class="bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center"
+              style="width: 64px; height: 64px;">
+              <i class="bi bi-file-earmark-plus fs-2"></i>
+            </div>
+          </div>
+          <h5 class="mt-2 fw-semibold">Create Policy</h5>
+          <p class="text-muted small mb-4">Draft and assign a new environmental policy to a department.</p>
+
+          <a href="/admin/create-policy" class="btn btn-primary mt-auto w-100 py-2">
+            New Policy
+          </a>
+        </div>
+      </div>
+
+      <div class="col-md-6 col-lg-4">
+        <div class="card formal-card text-center p-4 h-100">
+          <div class="mb-3">
+            <div class="bg-success text-white rounded-circle d-inline-flex align-items-center justify-content-center"
+              style="width: 64px; height: 64px;">
+              <i class="bi bi-bar-chart-steps fs-2"></i>
+            </div>
+          </div>
+          <h5 class="mt-2 fw-semibold">Monitor Policies</h5>
+          <p class="text-muted small mb-4">Review active policies, verification statuses, and compliance telemetry.</p>
+
+          <a href="/admin/monitor" class="btn btn-success mt-auto w-100 py-2">
+            View Reports
+          </a>
+        </div>
+      </div>
+
+    </div>
+
   </div>
 
-  <div class="col-md-4">
-    <div class="card shadow text-center p-4">
-      <i class="bi bi-bar-chart fs-1 text-primary"></i>
-      <h5 class="mt-2">Monitor Policies</h5>
-
-      <a href="/admin/monitor" class="btn btn-primary mt-2">
-        Go
-      </a>
-    </div>
-  </div>
-
-</div>
-
-</div>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
+
 </html>

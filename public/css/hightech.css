@@ -1,0 +1,188 @@
+:root {
+  --neon-green: #00ff88;
+  --neon-cyan: #00e5ff;
+  --dark-bg: #0a0e17;
+  --glass-bg: rgba(16, 24, 43, 0.6);
+  --glass-border: rgba(0, 255, 136, 0.3);
+  --glass-border-hover: rgba(0, 255, 136, 0.8);
+  --text-main: #e0f2fe;
+  --text-muted: #94a3b8;
+}
+
+body {
+  background-color: var(--dark-bg) !important;
+  background-image: 
+    radial-gradient(circle at 15% 50%, rgba(0, 255, 136, 0.08), transparent 25%),
+    radial-gradient(circle at 85% 30%, rgba(0, 229, 255, 0.08), transparent 25%);
+  color: var(--text-main) !important;
+  font-family: 'Inter', 'Segoe UI', sans-serif !important;
+}
+
+/* Glassmorphism utilities */
+.glass-container,
+.glass-card,
+.card {
+  background: var(--glass-bg) !important;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-border) !important;
+  border-radius: 16px !important;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5), 0 0 15px rgba(0, 255, 136, 0.1) !important;
+  transition: all 0.3s ease;
+  color: var(--text-main) !important;
+}
+
+.glass-card:hover,
+.card:hover {
+  border-color: var(--glass-border-hover) !important;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(0, 255, 136, 0.2) !important;
+  transform: translateY(-2px);
+}
+
+/* Typography and Accents */
+h1, h2, h3, h4, h5, h6 {
+  color: var(--neon-green) !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.5px;
+}
+
+.text-success { color: var(--neon-green) !important; }
+.text-primary { color: var(--neon-cyan) !important; }
+.text-muted { color: var(--text-muted) !important; }
+
+/* Neon Buttons */
+.btn-success,
+.btn-primary,
+button[type="submit"] {
+  background: transparent !important;
+  color: var(--neon-green) !important;
+  border: 1px solid var(--neon-green) !important;
+  box-shadow: inset 0 0 5px rgba(0, 255, 136, 0.2), 0 0 5px rgba(0, 255, 136, 0.2) !important;
+  border-radius: 8px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: all 0.3s ease !important;
+}
+
+.btn-primary {
+  color: var(--neon-cyan) !important;
+  border-color: var(--neon-cyan) !important;
+  box-shadow: inset 0 0 5px rgba(0, 229, 255, 0.2), 0 0 5px rgba(0, 229, 255, 0.2) !important;
+}
+
+.btn-success:hover,
+button[type="submit"]:hover {
+  background: rgba(0, 255, 136, 0.15) !important;
+  box-shadow: inset 0 0 10px rgba(0, 255, 136, 0.4), 0 0 20px rgba(0, 255, 136, 0.6) !important;
+  color: #fff !important;
+}
+
+.btn-primary:hover {
+  background: rgba(0, 229, 255, 0.15) !important;
+  box-shadow: inset 0 0 10px rgba(0, 229, 255, 0.4), 0 0 20px rgba(0, 229, 255, 0.6) !important;
+  color: #fff !important;
+}
+
+/* Inputs */
+.form-control, .form-select {
+  background: rgba(10, 14, 23, 0.7) !important;
+  border: 1px solid rgba(0, 255, 136, 0.3) !important;
+  color: var(--text-main) !important;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.form-control:focus, .form-select:focus {
+  background: rgba(10, 14, 23, 0.9) !important;
+  border-color: var(--neon-green) !important;
+  box-shadow: 0 0 10px rgba(0, 255, 136, 0.25) !important;
+  color: #fff !important;
+}
+
+::placeholder {
+  color: rgba(148, 163, 184, 0.5) !important;
+}
+
+/* Navbar */
+.navbar {
+  background: var(--glass-bg) !important;
+  backdrop-filter: blur(12px) !important;
+  border-bottom: 1px solid var(--glass-border) !important;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5) !important;
+}
+
+.navbar-brand {
+  color: var(--neon-green) !important;
+  font-weight: 700 !important;
+  text-shadow: 0 0 10px rgba(0, 255, 136, 0.3);
+}
+
+/* Tables */
+.table {
+  color: var(--text-main) !important;
+  background: transparent !important;
+}
+
+.table-dark, .table thead th {
+  background: rgba(10, 14, 23, 0.8) !important;
+  color: var(--neon-green) !important;
+  border-color: rgba(0, 255, 136, 0.2) !important;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+  letter-spacing: 0.5px;
+}
+
+.table tbody td {
+  border-color: rgba(0, 255, 136, 0.1) !important;
+  background: rgba(16, 24, 43, 0.3) !important;
+  vertical-align: middle;
+}
+
+.table tbody tr:hover td {
+  background: rgba(0, 255, 136, 0.05) !important;
+}
+
+/* Badges */
+.badge.bg-success {
+  background-color: rgba(0, 255, 136, 0.2) !important;
+  color: var(--neon-green) !important;
+  border: 1px solid var(--neon-green) !important;
+  box-shadow: 0 0 5px rgba(0, 255, 136, 0.2);
+}
+
+.badge.bg-warning {
+  background-color: rgba(255, 193, 7, 0.2) !important;
+  color: #ffc107 !important;
+  border: 1px solid #ffc107 !important;
+  box-shadow: 0 0 5px rgba(255, 193, 7, 0.2);
+}
+
+/* Icons */
+.bi {
+  filter: drop-shadow(0 0 8px currentColor);
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--dark-bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 255, 136, 0.3);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 255, 136, 0.6);
+}
+
+/* Custom Additions */
+.glow-text {
+  text-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
+}

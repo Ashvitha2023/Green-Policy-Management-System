@@ -1,33 +1,99 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <!-- Bootstrap CSS -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>Green Policy | Student Roster</title>
 
-<!-- Bootstrap Icons -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+    <!-- Professional Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+    <!-- Formal UI CSS -->
+    <link rel="stylesheet" href="/css/formal.css">
 
 </head>
+
 <body>
-    <h3>Assigned Students</h3>
 
-<ul>
+    <nav class="navbar px-4 py-2">
+        <span class="navbar-brand mb-0 h1 d-flex align-items-center gap-2">
+            <i class="bi bi-shield-lock"></i> Green Policy
+            <span class="text-muted fs-6 ms-2 pb-1 border-start border-secondary ps-3">Student Roster</span>
+        </span>
 
-<% students.forEach(s => { %>
+        <a href="/staff" class="btn btn-outline-light btn-sm px-3">
+            <i class="bi bi-arrow-left"></i> Back to Dashboard
+        </a>
+    </nav>
 
-<li><%= s.name %> - <%= s.email %></li>
+    <div class="container py-4">
 
-<% }) %>
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
 
-</ul>
+                <div class="card formal-card">
+                    <div
+                        class="card-header bg-white border-bottom py-3 d-flex justify-content-between align-items-center">
+                        <h4 class="mb-0 text-primary fw-semibold">
+                            <i class="bi bi-mortarboard me-2"></i>Assigned Students
+                        </h4>
+                        <span class="badge bg-secondary rounded-pill">
+                            <%= students.length %> Enrolled
+                        </span>
+                    </div>
 
-<a href="/staff">Back</a>
-<!-- Bootstrap JS -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+                    <div class="table-responsive m-0">
+                        <table class="table table-hover align-middle mb-0">
+                            <thead>
+                                <tr>
+                                    <th class="ps-4">Student Name</th>
+                                    <th>Contact Email</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% if(students.length===0) { %>
+                                    <tr>
+                                        <td colspan="2" class="text-center py-4 text-muted fst-italic">
+                                            No students found in the current roster.
+                                        </td>
+                                    </tr>
+                                    <% } %>
+                                        <% students.forEach(s=> { %>
+                                            <tr>
+                                                <td class="ps-4">
+                                                    <div class="d-flex align-items-center">
+                                                        <div class="bg-light text-primary rounded-circle d-flex align-items-center justify-content-center me-3"
+                                                            style="width: 32px; height: 32px;">
+                                                            <i class="bi bi-person-fill small"></i>
+                                                        </div>
+                                                        <span class="fw-medium text-dark">
+                                                            <%= s.name %>
+                                                        </span>
+                                                    </div>
+                                                </td>
+                                                <td class="text-secondary">
+                                                    <%= s.email %>
+                                                </td>
+                                            </tr>
+                                            <% }) %>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
 
+            </div>
+        </div>
+
+    </div>
+
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
+
 </html>
