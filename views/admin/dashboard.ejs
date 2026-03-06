@@ -13,6 +13,9 @@
   <!-- Formal UI CSS -->
   <link rel="stylesheet" href="/css/formal.css">
 
+  <!-- Theme Toggle Script -->
+  <script src="/js/theme.js"></script>
+
 </head>
 
 <body>
@@ -23,9 +26,16 @@
       <span class="text-muted fs-6 ms-2 pb-1 border-start border-secondary ps-3">Admin Dashboard</span>
     </span>
 
-    <a href="/logout" class="btn btn-outline-danger btn-sm px-3">
-      <i class="bi bi-box-arrow-right"></i> Logout
-    </a>
+    <div class="d-flex align-items-center gap-3">
+      <button class="btn btn-outline-light btn-sm rounded-circle d-flex align-items-center justify-content-center"
+        style="width: 32px; height: 32px;" onclick="toggleFormalTheme()" title="Toggle Dark/Light Mode">
+        <i id="theme-icon" class="bi bi-moon-stars"></i>
+      </button>
+
+      <a href="/logout" class="btn btn-outline-danger btn-sm px-3">
+        <i class="bi bi-box-arrow-right"></i> Logout
+      </a>
+    </div>
   </nav>
 
   <div class="container mt-5">

@@ -12,12 +12,37 @@
   <!-- Formal UI CSS -->
   <link rel="stylesheet" href="/css/formal.css">
 
+  <!-- Theme Toggle Script (Run early to prevent flash) -->
+  <script src="/js/theme.js"></script>
+
   <style>
     body {
       height: 100vh;
       display: flex;
       justify-content: center;
       align-items: center;
+      position: relative;
+    }
+
+    .theme-toggle-btn {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: transparent;
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .theme-toggle-btn:hover {
+      background: var(--border-color);
     }
 
     .login-wrapper {
@@ -35,7 +60,7 @@
       font-weight: 600;
       text-align: center;
       margin-bottom: 5px;
-      color: var(--dark-slate);
+      color: var(--text-main);
     }
 
     .brand-sub {
@@ -48,6 +73,11 @@
 
 
 <body>
+
+  <!-- Theme Toggle Button -->
+  <button class="theme-toggle-btn shadow-sm" onclick="toggleFormalTheme()" title="Toggle Dark/Light Mode">
+    <i id="theme-icon" class="bi bi-moon-stars"></i>
+  </button>
 
   <div class="login-wrapper">
     <div class="card formal-card">
@@ -92,7 +122,7 @@
       </form>
 
 
-      <hr class="text-muted mt-4 mb-3">
+      <hr class="text-muted mt-4 mb-3" style="opacity: 0.2;">
 
 
       <p class="text-center text-muted mt-2" style="font-size: 12px;">
