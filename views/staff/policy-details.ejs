@@ -9,8 +9,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
-  <!-- Formal UI CSS -->
-  <link rel="stylesheet" href="/css/formal.css">
+  <!-- Premium UI CSS -->
+  <link rel="stylesheet" href="/css/premium.css">
 
   <!-- Theme Toggle Script -->
   <script src="/js/theme.js"></script>
@@ -44,7 +44,7 @@
     <div class="row justify-content-center">
       <div class="col-lg-8">
 
-        <div class="card formal-card p-4">
+        <div class="card glass-card p-4">
 
           <div class="d-flex justify-content-between align-items-start mb-4 pb-3 border-bottom">
             <div>
@@ -69,8 +69,8 @@
 
           <div class="mb-5">
             <h6 class="text-muted text-uppercase small fw-semibold mb-2">Policy Description & Requirements</h6>
-            <div class="bg-light p-3 rounded border">
-              <p class="mb-0 text-dark">
+            <div class="p-3 rounded border" style="background: var(--surface-color);">
+              <p class="mb-0">
                 <%= policy.description %>
               </p>
             </div>
@@ -93,7 +93,7 @@
                         <i class="bi bi-person fw-bold fs-5"></i>
                       </div>
                       <div>
-                        <h6 class="mb-0 text-dark fw-medium">
+                        <h6 class="mb-0 fw-medium">
                           <%= s.name %>
                         </h6>
                         <small class="text-muted">
@@ -124,7 +124,7 @@
                 <h5 class="mb-0 fw-semibold">Upload Compliance Documentation</h5>
               </div>
 
-              <div class="bg-light p-4 rounded border">
+              <div class="p-4 rounded border" style="background: var(--surface-color);">
                 <form action="/staff/upload/<%= spid %>" method="POST" enctype="multipart/form-data">
                   <div class="mb-3">
                     <label class="form-label small text-muted">Select supporting document (.pdf, .jpg, .png)</label>
