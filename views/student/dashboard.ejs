@@ -84,22 +84,34 @@
                         <%= p.department %>
                       </span>
                     </div>
-                    <div class="d-flex justify-content-between">
+                    <div class="d-flex justify-content-between mb-2">
                       <span class="text-muted small fw-medium">Supervisor</span>
                       <span class="small fw-semibold">
                         <%= p.staff %>
                       </span>
                     </div>
+                    <% if(p.deadline) { %>
+                    <div class="d-flex justify-content-between">
+                      <span class="text-danger small fw-medium">Deadline</span>
+                      <span class="text-danger small fw-semibold">
+                        <%= new Date(p.deadline).toLocaleDateString() %>
+                      </span>
+                    </div>
+                    <% } %>
                   </div>
 
                   <div class="d-flex justify-content-between align-items-center pt-2 border-top">
-                    <span class="text-muted small text-uppercase fw-medium">Status</span>
-
-                    <% if(p.status==='completed' ){ %>
-                      <span class="badge bg-success"><i class="bi bi-check-circle me-1"></i> Completed</span>
+                    <% if(p.status === 'completed') { %>
+                      <span class="badge bg-success w-100 py-2"><i class="bi bi-check-circle me-1"></i> Policy Fulfilled</span>
+                    <% } else { %>
+                      <% if(!p.acknowledged) { %>
+                        <form action="/student/acknowledge/<%= p.spid %>" method="POST" class="w-100">
+                          <button type="submit" class="btn btn-primary btn-sm w-100"><i class="bi bi-check2-square me-1"></i> I Acknowledge</button>
+                        </form>
                       <% } else { %>
-                        <span class="badge bg-secondary"><i class="bi bi-arrow-repeat me-1"></i> In Progress</span>
-                        <% } %>
+                        <span class="badge bg-success w-100 py-2"><i class="bi bi-check-circle me-1"></i> Acknowledged</span>
+                      <% } %>
+                    <% } %>
                   </div>
 
                 </div>

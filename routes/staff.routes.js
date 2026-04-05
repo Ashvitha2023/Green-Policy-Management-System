@@ -63,7 +63,9 @@ router.get("/policy/:id", (req, res) => {
   SELECT
     p.title,
     p.description,
-    sp.status
+    p.deadline,
+    sp.status,
+    sp.rejection_reason
   FROM staff_policies sp
   JOIN policies p ON sp.policy_id = p.id
   WHERE sp.id = ? AND sp.staff_id = ?
@@ -79,7 +81,7 @@ router.get("/policy/:id", (req, res) => {
 
     // Get students
     const studentSql = `
-    SELECT u.name, u.email
+    SELECT u.name, u.email, sg.acknowledged
     FROM student_groups sg
     JOIN users u ON sg.student_id = u.id
     WHERE sg.staff_policy_id = ?
@@ -141,9 +143,9 @@ router.post("/upload/:id", upload.single("file"), (req, res) => {
 
       if (err) return res.send(err);
 
-      // 2️⃣ Update status to pending_verification
+      // 2️⃣ Update status to pending_verification and clear rejection
       db.query(
-        "UPDATE staff_policies SET status='pending_verification' WHERE id=?",
+        "UPDATE staff_policies SET status='pending_verification', rejection_reason=NULL WHERE id=?",
         [spid],
         (err2) => {
 

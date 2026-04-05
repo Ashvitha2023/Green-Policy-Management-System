@@ -22,11 +22,14 @@ router.get("/", (req, res) => {
 
   const sql = `
   SELECT
+    sp.id AS spid,
     p.title,
     p.description,
+    p.deadline,
     d.name AS department,
     u.name AS staff,
-    sp.status
+    sp.status,
+    sg.acknowledged
 
   FROM student_groups sg
 
@@ -55,5 +58,16 @@ router.get("/", (req, res) => {
   });
 });
 
+// ================= ACKNOWLEDGE POLICY =================
+router.post("/acknowledge/:spid", (req, res) => {
+  const studentId = req.session.userId;
+  const spid = req.params.spid;
+
+  const sql = "UPDATE student_groups SET acknowledged = 1 WHERE staff_policy_id = ? AND student_id = ?";
+  db.query(sql, [spid, studentId], (err) => {
+    if (err) return res.send(err);
+    res.redirect("/student");
+  });
+});
 
 module.exports = router;

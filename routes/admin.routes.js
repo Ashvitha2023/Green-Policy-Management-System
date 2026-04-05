@@ -41,12 +41,12 @@ router.get("/create-policy", (req, res) => {
 // ================= CREATE POLICY =================
 router.post("/create-policy", (req, res) => {
 
-  const { title, description, department_id } = req.body;
+  const { title, description, department_id, deadline } = req.body;
 
   // Insert policy
   db.query(
-    "INSERT INTO policies (title, description, department_id) VALUES (?, ?, ?)",
-    [title, description, department_id],
+    "INSERT INTO policies (title, description, department_id, deadline) VALUES (?, ?, ?, ?)",
+    [title, description, department_id, deadline],
     (err, result) => {
 
       if (err) {
@@ -57,19 +57,15 @@ router.post("/create-policy", (req, res) => {
       const policyId = result.insertId;
 
 
-      // Find free staff
+      // Smart Staff Assignment
       db.query(
         `
-        SELECT *
-        FROM users
-        WHERE role='staff'
-          AND department_id=?
-          AND id NOT IN (
-            SELECT staff_id
-            FROM staff_policies
-            WHERE status IN ('pending','pending_verification')
-          )
-        ORDER BY RAND()
+        SELECT u.id, COUNT(sp.id) as active_count
+        FROM users u
+        LEFT JOIN staff_policies sp ON u.id = sp.staff_id AND sp.status IN ('pending', 'pending_verification')
+        WHERE u.role = 'staff' AND u.department_id = ?
+        GROUP BY u.id
+        ORDER BY active_count ASC, u.created_at ASC
         LIMIT 1
         `,
         [department_id],
@@ -78,7 +74,7 @@ router.post("/create-policy", (req, res) => {
           if (err) return res.send(err);
 
           if (staff.length === 0) {
-            return res.send("No free staff available");
+            return res.send("No staff available in this department");
           }
 
           const staffId = staff[0].id;
@@ -98,28 +94,20 @@ router.post("/create-policy", (req, res) => {
               const staffPolicyId = result2.insertId;
 
 
-              // Select students
+              // Smart Student Assignment
               db.query(
                 `
                 INSERT INTO student_groups (staff_policy_id, student_id)
-
-                SELECT ?, u.id
-                FROM users u
-
-                WHERE u.role='student'
-                  AND u.department_id=?
-                  AND u.id NOT IN (
-
-                    SELECT sg.student_id
-                    FROM student_groups sg
-                    JOIN staff_policies sp
-                      ON sg.staff_policy_id = sp.id
-                    WHERE sp.status IN ('pending','pending_verification')
-
-                  )
-
-                ORDER BY RAND()
-                LIMIT 10
+                SELECT ?, sub.id
+                FROM (
+                  SELECT u.id, COUNT(sg.id) as participation_count
+                  FROM users u
+                  LEFT JOIN student_groups sg ON u.id = sg.student_id
+                  WHERE u.role = 'student' AND u.department_id = ?
+                  GROUP BY u.id
+                  ORDER BY participation_count ASC, u.created_at ASC
+                  LIMIT 10
+                ) sub
                 `,
                 [staffPolicyId, department_id],
                 (err, result3) => {
@@ -127,10 +115,10 @@ router.post("/create-policy", (req, res) => {
                   if (err) return res.send(err);
 
                   if (result3.affectedRows < 10) {
-                    return res.send("Not enough students");
+                    return res.redirect(`/admin/monitor?warning=Only ${result3.affectedRows} students available in this department`);
                   }
 
-                  res.redirect("/admin");
+                  res.redirect("/admin/monitor");
                 }
               );
             }
@@ -145,6 +133,8 @@ router.post("/create-policy", (req, res) => {
 // ================= MONITOR =================
 router.get("/monitor", (req, res) => {
 
+  const warning = req.query.warning || null;
+
   const sql = `
   SELECT
 
@@ -156,9 +146,22 @@ router.get("/monitor", (req, res) => {
 
     (
       SELECT COUNT(*)
+      FROM staff_policies sp2
+      WHERE sp2.staff_id = sp.staff_id AND sp2.status IN ('pending', 'pending_verification')
+    ) AS staff_active_count,
+
+    (
+      SELECT COUNT(*)
       FROM student_groups sg
       WHERE sg.staff_policy_id = sp.id
     ) AS students,
+
+    (
+      SELECT GROUP_CONCAT(CONCAT(su.name, ' - ', (SELECT COUNT(*) FROM student_groups sg2 WHERE sg2.student_id = su.id), ' initiatives') SEPARATOR '|')
+      FROM student_groups sg
+      JOIN users su ON sg.student_id = su.id
+      WHERE sg.staff_policy_id = sp.id
+    ) AS student_details,
 
     (
       SELECT file_path
@@ -185,7 +188,8 @@ router.get("/monitor", (req, res) => {
     }
 
     res.render("admin/monitor", {
-      reports: results
+      reports: results,
+      warning: warning
     });
   });
 });
@@ -194,16 +198,20 @@ router.get("/monitor", (req, res) => {
 // ================= VERIFY =================
 router.post("/verify", (req, res) => {
 
-  const { id, action } = req.body;
+  const { id, action, rejection_reason } = req.body;
 
   let status = "pending";
+  let reason = null;
 
   if (action === "approve") status = "completed";
-  if (action === "reject") status = "rejected";
+  if (action === "reject") {
+    status = "rejected";
+    reason = rejection_reason || "No reason provided.";
+  }
 
   db.query(
-    "UPDATE staff_policies SET status=? WHERE id=?",
-    [status, id],
+    "UPDATE staff_policies SET status=?, rejection_reason=? WHERE id=?",
+    [status, reason, id],
     (err) => {
 
       if (err) return res.send(err);
