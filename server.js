@@ -7,6 +7,7 @@ require("./cron");
 
 const app = express();
 
+
 // Middleware
 app.use(cors());
 app.use(express.json());
@@ -14,7 +15,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // Session setup
 app.use(session({
-  secret: "greenpolicysecret",
+  secret: process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: true
 }));
@@ -39,6 +40,7 @@ app.use("/staff", staffRoutes);
 app.use("/student", studentRoutes);
 
 // Server start
-app.listen(3000, () => {
-  console.log("Server running on port 3000");
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log("Server running on port ${PORT}");
 });
